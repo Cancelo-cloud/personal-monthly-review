@@ -178,7 +178,7 @@
 
         .muscle-group-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 10px;
             margin-top: 15px;
         }
@@ -199,6 +199,33 @@
         .muscle-group-item input {
             padding: 5px;
             font-size: 12px;
+        }
+
+        .training-hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .training-item {
+            background: #e8f5e8;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #c8e6c9;
+        }
+
+        .training-item label {
+            font-size: 13px;
+            margin-bottom: 5px;
+            color: #2e7d32;
+        }
+
+        .training-item input {
+            padding: 8px;
+            font-size: 14px;
+            border: 2px solid #c8e6c9;
         }
 
         .financial-card {
@@ -320,20 +347,36 @@
                 <h4 style="margin-top: 20px; margin-bottom: 10px; color: #555;">Strength Training (Sessions)</h4>
                 <div class="muscle-group-grid">
                     <div class="muscle-group-item">
-                        <label>Biceps/Triceps:</label>
+                        <label>Legs:</label>
+                        <input type="number" id="legs" placeholder="0">
+                    </div>
+                    <div class="muscle-group-item">
+                        <label>Arms:</label>
                         <input type="number" id="arms" placeholder="0">
                     </div>
                     <div class="muscle-group-item">
-                        <label>Pectorals:</label>
+                        <label>Chest:</label>
                         <input type="number" id="chest" placeholder="0">
                     </div>
                     <div class="muscle-group-item">
-                        <label>Quadriceps:</label>
-                        <input type="number" id="thighs" placeholder="0">
+                        <label>Shoulders:</label>
+                        <input type="number" id="shoulders" placeholder="0">
                     </div>
                     <div class="muscle-group-item">
-                        <label>Latissimus Dorsi:</label>
+                        <label>Back:</label>
                         <input type="number" id="back" placeholder="0">
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px; color: #555;">Training Hours</h4>
+                <div class="training-hours-grid">
+                    <div class="training-item">
+                        <label>Agility Training:</label>
+                        <input type="number" id="agility" placeholder="0" step="0.5">
+                    </div>
+                    <div class="training-item">
+                        <label>Recovery:</label>
+                        <input type="number" id="recovery" placeholder="0" step="0.5">
                     </div>
                 </div>
                 
@@ -431,6 +474,10 @@
                         <div class="value" id="totalStrength">0</div>
                     </div>
                     <div class="summary-item">
+                        <h4>Training Hours</h4>
+                        <div class="value" id="totalTrainingHours">0</div>
+                    </div>
+                    <div class="summary-item">
                         <h4>Energy Score</h4>
                         <div class="value" id="energyScore">0/10</div>
                     </div>
@@ -468,10 +515,13 @@
             
             const running = parseFloat(document.getElementById('running').value) || 0;
             const cycling = parseFloat(document.getElementById('cycling').value) || 0;
+            const legs = parseFloat(document.getElementById('legs').value) || 0;
             const arms = parseFloat(document.getElementById('arms').value) || 0;
             const chest = parseFloat(document.getElementById('chest').value) || 0;
-            const thighs = parseFloat(document.getElementById('thighs').value) || 0;
+            const shoulders = parseFloat(document.getElementById('shoulders').value) || 0;
             const back = parseFloat(document.getElementById('back').value) || 0;
+            const agility = parseFloat(document.getElementById('agility').value) || 0;
+            const recovery = parseFloat(document.getElementById('recovery').value) || 0;
             const energyLevel = parseFloat(document.getElementById('energyLevel').value) || 0;
             
             // Calculate net worth
@@ -483,8 +533,12 @@
             document.getElementById('totalDistance').textContent = totalDistance.toFixed(1) + ' km';
             
             // Calculate total strength sessions
-            const totalStrength = arms + chest + thighs + back;
+            const totalStrength = legs + arms + chest + shoulders + back;
             document.getElementById('totalStrength').textContent = totalStrength;
+            
+            // Calculate total training hours
+            const totalTrainingHours = agility + recovery;
+            document.getElementById('totalTrainingHours').textContent = totalTrainingHours.toFixed(1);
             
             // Calculate savings rate
             const totalSavings = savings1 + savings2;
@@ -503,8 +557,8 @@
             const currentMonth = document.getElementById('month').value;
             monthlyData[currentMonth] = {
                 income, stocks, savings1, savings2, debts, groceries,
-                running, cycling, arms, chest, thighs, back, energyLevel,
-                netWorth, totalDistance, totalStrength, savingsRate, bookCount,
+                running, cycling, legs, arms, chest, shoulders, back, agility, recovery, energyLevel,
+                netWorth, totalDistance, totalStrength, totalTrainingHours, savingsRate, bookCount,
                 wins: document.getElementById('wins').value,
                 values: document.getElementById('values').value,
                 projects: document.getElementById('projects').value,
@@ -535,10 +589,13 @@
                     groceries: document.getElementById('groceries').value || 0,
                     running: document.getElementById('running').value || 0,
                     cycling: document.getElementById('cycling').value || 0,
+                    legs: document.getElementById('legs').value || 0,
                     arms: document.getElementById('arms').value || 0,
                     chest: document.getElementById('chest').value || 0,
-                    thighs: document.getElementById('thighs').value || 0,
+                    shoulders: document.getElementById('shoulders').value || 0,
                     back: document.getElementById('back').value || 0,
+                    agility: document.getElementById('agility').value || 0,
+                    recovery: document.getElementById('recovery').value || 0,
                     energyLevel: document.getElementById('energyLevel').value || 0,
                     wins: document.getElementById('wins').value || '',
                     values: document.getElementById('values').value || '',
@@ -556,13 +613,15 @@
                 
                 const netWorth = parseFloat(data.stocks) + parseFloat(data.savings1) + parseFloat(data.savings2) - parseFloat(data.debts);
                 const totalDistance = parseFloat(data.running) + parseFloat(data.cycling);
-                const totalStrength = parseFloat(data.arms) + parseFloat(data.chest) + parseFloat(data.thighs) + parseFloat(data.back);
+                const totalStrength = parseFloat(data.legs) + parseFloat(data.arms) + parseFloat(data.chest) + parseFloat(data.shoulders) + parseFloat(data.back);
+                const totalTrainingHours = parseFloat(data.agility) + parseFloat(data.recovery);
                 const savingsRate = parseFloat(data.income) > 0 ? Math.round(((parseFloat(data.savings1) + parseFloat(data.savings2)) / parseFloat(data.income)) * 100) : 0;
                 const bookCount = data.booksFinished ? (data.booksFinished.match(/•/g) || []).length : 0;
                 
                 data.netWorth = netWorth;
                 data.totalDistance = totalDistance;
                 data.totalStrength = totalStrength;
+                data.totalTrainingHours = totalTrainingHours;
                 data.savingsRate = savingsRate;
                 data.bookCount = bookCount;
             }
@@ -581,11 +640,15 @@
             csvContent += `Running Distance,${data.running} km\n`;
             csvContent += `Cycling Distance,${data.cycling} km\n`;
             csvContent += `Total Distance,${data.totalDistance} km\n`;
-            csvContent += `Biceps/Triceps Sessions,${data.arms}\n`;
-            csvContent += `Pectorals Sessions,${data.chest}\n`;
-            csvContent += `Quadriceps Sessions,${data.thighs}\n`;
-            csvContent += `Latissimus Dorsi Sessions,${data.back}\n`;
+            csvContent += `Legs Sessions,${data.legs}\n`;
+            csvContent += `Arms Sessions,${data.arms}\n`;
+            csvContent += `Chest Sessions,${data.chest}\n`;
+            csvContent += `Shoulders Sessions,${data.shoulders}\n`;
+            csvContent += `Back Sessions,${data.back}\n`;
             csvContent += `Total Strength Sessions,${data.totalStrength}\n`;
+            csvContent += `Agility Training Hours,${data.agility}\n`;
+            csvContent += `Recovery Hours,${data.recovery}\n`;
+            csvContent += `Total Training Hours,${data.totalTrainingHours}\n`;
             csvContent += `Energy Level,${data.energyLevel}/10\n\n`;
             
             csvContent += `GOALS & PROJECTS\n`;
@@ -660,54 +723,7 @@
                 document.getElementById('netWorth').textContent = 'R 0';
                 document.getElementById('totalDistance').textContent = '0 km';
                 document.getElementById('totalStrength').textContent = '0';
+                document.getElementById('totalTrainingHours').textContent = '0';
                 document.getElementById('savingsRate').textContent = '0%';
                 document.getElementById('energyScore').textContent = '0/10';
-                document.getElementById('booksCount').textContent = '0';
-            }
-        }
-
-        // Load data when month changes
-        document.getElementById('month').addEventListener('change', function() {
-            const selectedMonth = this.value;
-            if (monthlyData[selectedMonth]) {
-                const data = monthlyData[selectedMonth];
-                document.getElementById('ductIncome').value = data.income || '';
-                document.getElementById('stockValue').value = data.stocks || '';
-                document.getElementById('savings1').value = data.savings1 || '';
-                document.getElementById('savings2').value = data.savings2 || '';
-                document.getElementById('debts').value = data.debts || '';
-                document.getElementById('groceries').value = data.groceries || '';
-                document.getElementById('running').value = data.running || '';
-                document.getElementById('cycling').value = data.cycling || '';
-                document.getElementById('arms').value = data.arms || '';
-                document.getElementById('chest').value = data.chest || '';
-                document.getElementById('thighs').value = data.thighs || '';
-                document.getElementById('back').value = data.back || '';
-                document.getElementById('energyLevel').value = data.energyLevel || '';
-                document.getElementById('wins').value = data.wins || '';
-                document.getElementById('values').value = data.values || '';
-                document.getElementById('projects').value = data.projects || '';
-                document.getElementById('readingHours').value = data.readingHours || '';
-                document.getElementById('blogPosts').value = data.blogPosts || '';
-                document.getElementById('webWritings').value = data.webWritings || '';
-                document.getElementById('booksBegun').value = data.booksBegun || '';
-                document.getElementById('booksFinished').value = data.booksFinished || '';
-                document.getElementById('purchase1').value = data.purchase1 || '';
-                document.getElementById('purchase2').value = data.purchase2 || '';
-                document.getElementById('purchase3').value = data.purchase3 || '';
-                document.getElementById('estimatedCost').value = data.estimatedCost || '';
-                
-                // Update summary
-                document.getElementById('netWorth').textContent = 'R ' + (data.netWorth || 0).toLocaleString();
-                document.getElementById('totalDistance').textContent = (data.totalDistance || 0) + ' km';
-                document.getElementById('totalStrength').textContent = (data.totalStrength || 0);
-                document.getElementById('savingsRate').textContent = (data.savingsRate || 0) + '%';
-                document.getElementById('energyScore').textContent = (data.energyLevel || 0) + '/10';
-                document.getElementById('booksCount').textContent = (data.bookCount || 0);
-            } else {
-                clearData();
-            }
-        });
-    </script>
-</body>
-</html>
+                document.getElementById('booksCount').textContent = '
