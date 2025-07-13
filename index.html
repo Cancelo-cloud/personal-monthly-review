@@ -392,12 +392,14 @@
                 <div class="input-group">
                     <label>Monthly Wins:</label>
                     <textarea id="wins" rows="4" class="bullet-textarea" placeholder="• Achievement 1
-• Achievement 2"></textarea>
+• Achievement 2
+• Achievement 3"></textarea>
                 </div>
                 <div class="input-group">
                     <label>Monthly Values:</label>
                     <textarea id="values" rows="4" class="bullet-textarea" placeholder="• Value practiced 1
-• Value practiced 2"></textarea>
+• Value practiced 2
+• Value practiced 3"></textarea>
                 </div>
                 <div class="input-group">
                     <label>Project Progress:</label>
@@ -419,7 +421,7 @@
                 <div class="input-group">
                     <label>Best Writings From Web:</label>
                     <textarea id="webWritings" rows="4" class="bullet-textarea" placeholder="• Author Name - Article Title
-• Author Name - Article Title>
+• Author Name - Article Title
 • Author Name - Article Title"></textarea>
                 </div>
                 <div class="input-group">
@@ -500,38 +502,39 @@
         </div>
     </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    window.calculateSummary = function () {
-      const income = parseFloat(document.getElementById('ductIncome').value) || 0;
-      const stocks = parseFloat(document.getElementById('stockValue').value) || 0;
-      const savings1 = parseFloat(document.getElementById('savings1').value) || 0;
-      const savings2 = parseFloat(document.getElementById('savings2').value) || 0;
-      const debts = parseFloat(document.getElementById('debts').value) || 0;
-      const groceries = parseFloat(document.getElementById('groceries').value) || 0;
+    <script>
+        let monthlyData = {};
 
-      const running = parseFloat(document.getElementById('running').value) || 0;
-      const cycling = parseFloat(document.getElementById('cycling').value) || 0;
-      const legs = parseFloat(document.getElementById('legs').value) || 0;
-      const arms = parseFloat(document.getElementById('arms').value) || 0;
-      const chest = parseFloat(document.getElementById('chest').value) || 0;
-      const shoulders = parseFloat(document.getElementById('shoulders').value) || 0;
-      const back = parseFloat(document.getElementById('back').value) || 0;
-      const agility = parseFloat(document.getElementById('agility').value) || 0;
-      const recovery = parseFloat(document.getElementById('recovery').value) || 0;
-      const energyLevel = parseFloat(document.getElementById('energyLevel').value) || 0;
-
-      const netWorth = income + stocks + savings1 + savings2 - debts;
-      document.getElementById('netWorth').textContent = 'R ' + netWorth.toLocaleString();
-
-      const totalDistance = running + cycling;
-      document.getElementById('totalDistance').textContent = totalDistance.toFixed(1) + ' km';
-
-      const totalStrength = legs + arms + chest + shoulders + back;
-      document.getElementById('totalStrength').textContent = totalStrength;
-    };
-  });
-</script>
+        function calculateSummary() {
+            const income = parseFloat(document.getElementById('ductIncome').value) || 0;
+            const stocks = parseFloat(document.getElementById('stockValue').value) || 0;
+            const savings1 = parseFloat(document.getElementById('savings1').value) || 0;
+            const savings2 = parseFloat(document.getElementById('savings2').value) || 0;
+            const debts = parseFloat(document.getElementById('debts').value) || 0;
+            const groceries = parseFloat(document.getElementById('groceries').value) || 0;
+            
+            const running = parseFloat(document.getElementById('running').value) || 0;
+            const cycling = parseFloat(document.getElementById('cycling').value) || 0;
+            const legs = parseFloat(document.getElementById('legs').value) || 0;
+            const arms = parseFloat(document.getElementById('arms').value) || 0;
+            const chest = parseFloat(document.getElementById('chest').value) || 0;
+            const shoulders = parseFloat(document.getElementById('shoulders').value) || 0;
+            const back = parseFloat(document.getElementById('back').value) || 0;
+            const agility = parseFloat(document.getElementById('agility').value) || 0;
+            const recovery = parseFloat(document.getElementById('recovery').value) || 0;
+            const energyLevel = parseFloat(document.getElementById('energyLevel').value) || 0;
+            
+            // Calculate net worth
+            const netWorth = stocks + savings1 + savings2 - debts;
+            document.getElementById('netWorth').textContent = 'R ' + netWorth.toLocaleString();
+            
+            // Calculate total distance
+            const totalDistance = running + cycling;
+            document.getElementById('totalDistance').textContent = totalDistance.toFixed(1) + ' km';
+            
+            // Calculate total strength sessions
+            const totalStrength = legs + arms + chest + shoulders + back;
+            document.getElementById('totalStrength').textContent = totalStrength;
             
             // Calculate total training hours
             const totalTrainingHours = agility + recovery;
