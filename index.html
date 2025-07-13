@@ -523,7 +523,7 @@
             const energyLevel = parseFloat(document.getElementById('energyLevel').value) || 0;
             
             // Calculate net worth
-            const netWorth = stocks + savings1 + savings2 - debts;
+            const netWorth = income + stocks + savings1 + savings2 - debts;
             document.getElementById('netWorth').textContent = 'R ' + netWorth.toLocaleString();
             
             // Calculate total distance
